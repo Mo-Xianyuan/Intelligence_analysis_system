@@ -1,0 +1,32 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+class webpage(models.Model):
+    def __unicode__(self):
+        return self.title
+
+    title = models.CharField(max_length=50)
+    intro = models.CharField(max_length=200)
+    link = models.CharField(max_length=200)
+    text = models.TextField()
+    cate = models.CharField(max_length=20)
+    pub_time = models.CharField(max_length=20, default='')
+    dow_time = models.CharField(max_length=20, default='')
+    website = models.CharField(max_length=200, default='')
+    hash_value = models.IntegerField(default=0)
+
+class Website(models.Model):
+    def __unicode__(self):
+        return self.domain
+
+    start_url = models.CharField(max_length=200, default='')
+    allowed_domain = models.CharField(max_length=200, default='')
+    user = models.ForeignKey(User)
+
+class Favour(models.Model):
+    def __unicode__(self):
+        return self.symbol
+
+    symbol = models.CharField(max_length=100)
+    keywords = models.CharField(max_length=100)
+    user = models.ForeignKey(User)
