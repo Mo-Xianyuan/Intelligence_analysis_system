@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+#encoding=utf-8
+
+import jieba
+import sys
+sys.path.append('/home/dinosaur/projects/Intelligence_analysis_system')
+from db_controlter import DB_controlter
+
+class Create_Inversion(DB_controlter):
+    def __init__(self):
+        DB_controlter.__init__(self)
+        self.inversion = dict()
+        self.update_inversion()
+        
+    def get_webpage_from_db(self):
+        self.cursor.execute("SELECT * FROM WebPage_webpage")
+        return self.cursor.fetchall()
+
+    def update_inversion(self):
+        for webpage in self.get_webpage_from_db():
+            for word in jieba.cut_for_search(webpage[4]):
+                if not word in self.inversion:
+                    self.inversion[word] = dict()
+                else:
+                    if not webpage[0] in self.inversion[word]:
+                        inversion[word][webpage[0]] = 1   
+                    self.inversion[word][webpage[0]] += 1

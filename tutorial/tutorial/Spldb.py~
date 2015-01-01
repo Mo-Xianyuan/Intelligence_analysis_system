@@ -1,0 +1,16 @@
+import MySQLdb
+
+class Sqldb:
+    def __init__():
+        # 打开数据库链接
+        self.db = MySQLdb.connect("localhost","root","271828","crawl_item_db" )
+        self.cursor = db.cursor()
+        self.insert_sql = """INSERT INTO news_items_table(title, link, pub_time, dow_time, text)
+                      VALUES ('%s', '%s', '%s', '%s', "%s")"""
+
+    def insert2db(title, link, pt, dt, text):
+        try:
+            self.cursor.execute(self.insert_sql %(title, link, pt, dt, text))
+            self.db.commit()
+        except:
+            self.db.rollback()

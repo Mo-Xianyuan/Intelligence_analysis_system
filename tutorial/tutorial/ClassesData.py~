@@ -1,0 +1,29 @@
+import mysql.connector
+
+class ClassData:
+    def __init__(self):
+        self.db = mysql.connector.connect(
+            user='root', passwd='271828', db='crawl_item_db', 
+            host='127.0.0.1', charset="utf8",  use_unicode=True, raise_on_warnings=False
+        )
+        self.cursor = self.db.cursor()
+        self.create_classes_table()
+        self.items = []
+        self.get_items_from_db()
+
+    def create_classes_table(self):
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS \
+             classes_table( id int unsigned not null auto_increment primary key, \
+                            classes_name varchar(32) not null)")
+
+    def get_items_from_db(self):
+        self.cursor.execute("SELECT * FROM classes_table")
+        self.items = self.cursor.fetchall()
+
+    def get_classes(self):
+        return [i[1] for i in self.items]
+    
+    def add_classes(self, _class):
+        self.cursor.execute("""INSERT INTO classes_table(classes_name) \
+                            VALUES ('%s')""" % (_class))
+        self.db.commit()
