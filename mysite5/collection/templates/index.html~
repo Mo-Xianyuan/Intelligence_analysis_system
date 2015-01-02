@@ -1,0 +1,93 @@
+<!DOCTYPE html>  
+{% load bootstrap_toolkit %}  
+{% load url from future %}  
+<html lang="en">  
+    <head>  
+        <meta charset="utf-8">  
+        <title>定向网页分析系统</title>  
+        <h2>你好{{username}},以下是今天的新消息</h2>
+        <meta name="description" content="">  
+        <meta name="author" content="dinosaur">  
+        {% bootstrap_stylesheet_tag %}  
+        {% bootstrap_stylesheet_tag "responsive" %}  
+        <style type="text/css">  
+            body {  
+                padding-top: 40px;  
+            }  
+        </style>  
+        <!--[if lt IE 9]>  
+        <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>  
+        <![endif]-->  
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>  
+        {% bootstrap_javascript_tag %}  
+        {% block extra_head %}{% endblock %}
+          
+    </head>
+        <script>
+            function addURLParam(url, name, value)
+            {
+                url += (url.indexOf("?") == -1 ? "?" : "&");
+                url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
+                return url;
+            }
+
+            function markdown(obj)
+            { 
+                
+                xmlHttp = new XMLHttpRequest(); 
+                var url = "/collection/mark";
+                url = addURLParam(url, "link", obj);
+                //url = addURLParam(url, "time", getTime());
+                //alert(url);
+                xmlHttp.open("GET", url, true);    
+                xmlHttp.send(); 
+            }
+        </script>
+      
+    <body>
+        {% if not favours %}
+            <div class="alert">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>警告!</strong> 你还没有创建任何跟踪.
+            </div>
+        {% endif %}
+        
+        <ul class="nav nav-tabs">
+            <li><a href="/accounts/index/">首页</a></li>
+            <li><a href="/WebPage/Track/create/">创建</a></li>
+            <li class="active">
+                <a href="/collection/recommended/">推荐</a>
+            </li>
+            <li><a href="">....</a></li>
+        </ul> 
+        {% if favours %}  
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span2">
+                    <!--Sidebar content-->
+                    <div class="tabbable tabs-left">
+                        <ul class="nav nav-tabs">
+                            {% for favour in favours %}
+                                <li><a href={{link}}>{{favour.symbol}}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                        </div>
+                    </div>          
+                </div>
+                <div class="span10">
+                    <!--Body content-->
+                    <div class="well">
+                        {% for mypage in mypages %}  
+                        <li><a href={{mypage.link}} target="_blank" onclick="markdown(this)">{{mypage.title}}</a></li>
+                        <p> {{mypage.intro}} </p>
+                        {% endfor %}  
+                        <p> </p>   
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}            
+    </body>  
+</html>  
+

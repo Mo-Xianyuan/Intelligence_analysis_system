@@ -1,0 +1,66 @@
+<!DOCTYPE html>  
+{% load bootstrap_toolkit %}  
+{% load url from future %}  
+<html lang="en">  
+    <head>  
+        <meta charset="utf-8">  
+        <title>定向网页分析系统</title>  
+        <h2>定向网页分析系统</h2>
+        <meta name="description" content="">  
+        <meta name="author" content="dinosaur">  
+        {% bootstrap_stylesheet_tag %}  
+        {% bootstrap_stylesheet_tag "responsive" %}  
+        <style type="text/css">  
+            body {  
+                padding-top: 40px;  
+            }  
+        </style>  
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>  
+        {% bootstrap_javascript_tag %}  
+        {% block extra_head %}{% endblock %}
+    </head>
+    <body>
+        <ul class="nav nav-tabs">
+            <li><a href="/accounts/index/">首页</a></li>
+            <li><a href="/WebPage/Track/create/">创建</a></li>
+            <li><a href="/collection/recommended/">推荐</a></li>
+            <li><a href="/WebPage/Track/delete/">删除</a></li>
+            <li><a href="">...</a></li>
+        </ul> 
+        {% if favours %}  
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span2">
+                    <!--Sidebar content-->
+                    <div class="tabbable tabs-left">
+                        <ul class="nav nav-tabs">
+                            {% for favour in favours %}
+                                <li><a href="/accounts/favour/{{favour.keywords}}">{{favour.symbol}}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                        </div>
+                    </div>          
+                </div>
+                <div class="span10">
+                 <!--Body content-->
+                  <div style="margin: 0 auto;">
+                   <div style="width: 700px; height: 100px; float: left;">
+                    <div class="well">
+                     <h2>{{webpage.title}}</h2>
+                     <p>{{webpage.dow_time}}</p>
+                     <p>{{webpage.text}}</p>
+                     <p><a href="{{webpage.link}}">原文链接:{{webpage.link}}</a></p>    
+                    </div>
+                   </div>
+                   <div style="height: 10px;border:10px;">
+                     <div class="well">
+                     </div>
+                   </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}            
+    </body>  
+</html> 
